@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
 import './Layout.css';
 
 function useTheme() {
@@ -42,6 +43,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
           <button className="theme-toggle" onClick={toggleTheme} title="Promeni temu">
             {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+          <button className="logout-btn" onClick={() => supabase.auth.signOut()} title="Odjavi se">
+            🚪
           </button>
         </div>
       </header>
