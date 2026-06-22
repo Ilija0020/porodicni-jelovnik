@@ -1,0 +1,177 @@
+.family-page h2 {
+  color: #1b5e20;
+  margin-top: 0;
+}
+
+.add-btn {
+  padding: 0.7rem 1.5rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: 1.5rem;
+}
+
+.add-btn:hover { background: #1b5e20; }
+
+/* Forma */
+.member-form {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.member-form h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.member-form label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.member-form input,
+.member-form select {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.member-form input:focus,
+.member-form select:focus {
+  outline: 2px solid #4caf50;
+  outline-offset: -1px;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row label {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.save-btn {
+  padding: 0.6rem 1.5rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn:hover { background: #1b5e20; }
+
+.cancel-btn {
+  padding: 0.6rem 1.2rem;
+  background: #eee;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.cancel-btn:hover { background: #ddd; }
+
+.calories-preview {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background: #e8f5e9;
+  border-radius: 6px;
+  color: #2e7d32;
+  font-size: 0.9rem;
+}
+
+/* Lista članova */
+.family-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.family-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  gap: 1rem;
+}
+
+.family-card-body h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.05rem;
+  color: #1b5e20;
+}
+
+.family-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.82rem;
+  color: #666;
+}
+
+.activity-label {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.family-card-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.family-card-actions button {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.15s;
+}
+
+.family-card-actions button:hover { background: #f5f5f5; }
+
+.delete-btn:hover { background: #ffebee !important; border-color: #e53935 !important; }
+
+.empty-msg {
+  color: #999;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 500px) {
+  .form-row { flex-direction: column; }
+  .family-card { flex-direction: column; align-items: flex-start; }
+  .family-card-actions { margin-top: 0.5rem; }
+}

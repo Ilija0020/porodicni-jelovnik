@@ -1,0 +1,66 @@
+.shopping-page h2 {
+  color: #1b5e20;
+  margin-top: 0;
+}
+
+.shopping-summary {
+  color: #777;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+}
+
+/* Kategorije */
+.shopping-category {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.category-header {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.category-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.shopping-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.shopping-item:last-child {
+  border-bottom: none;
+}
+
+.shopping-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.shopping-amount {
+  font-weight: 700;
+  color: #2e7d32;
+  background: #e8f5e9;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+}

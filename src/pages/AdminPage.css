@@ -1,0 +1,251 @@
+.admin-page h2 {
+  color: #1b5e20;
+  margin-top: 0;
+}
+
+.add-btn {
+  padding: 0.7rem 1.5rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background 0.15s;
+}
+
+.add-btn:hover { background: #1b5e20; }
+
+/* Forma za recept */
+.recipe-form {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.recipe-form h3 { margin: 0 0 1rem 0; color: #333; }
+.recipe-form h4 { margin: 1.2rem 0 0.5rem 0; color: #555; font-size: 0.95rem; }
+
+.form-section {
+  margin-bottom: 0.6rem;
+}
+
+.form-section label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.2rem;
+}
+
+.form-section input,
+.form-section select {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.form-row-3, .form-row-5, .form-row-4, .form-row-2 {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row-3 > *, .form-row-5 > *, .form-row-4 > *, .form-row-2 > * { flex: 1; }
+
+/* Sastojci */
+.ingredient-form {
+  background: white;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.small-add-btn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.small-add-btn:hover { background: #388e3c; }
+
+.ing-list-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.ing-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #e8f5e9;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.ing-tag button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  font-size: 0.8rem;
+  padding: 0 2px;
+}
+
+.ing-tag button:hover { color: #e53935; }
+
+/* Koraci */
+.step-form {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.step-form input {
+  flex: 1;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.step-form button {
+  padding: 0.45rem 0.8rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.step-list-preview {
+  padding: 0;
+  margin: 0.5rem 0;
+  list-style: decimal inside;
+}
+
+.step-list-preview li {
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.step-list-preview li button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.step-list-preview li button:hover { color: #e53935; }
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.save-btn {
+  padding: 0.6rem 1.5rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn:hover { background: #1b5e20; }
+
+.cancel-btn {
+  padding: 0.6rem 1.2rem;
+  background: #eee;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.cancel-btn:hover { background: #ddd; }
+
+/* Lista recepata */
+.recipe-list { margin-top: 2rem; }
+
+.recipe-list h3 { color: #333; margin-bottom: 0.8rem; }
+
+.recipe-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.recipe-list-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.recipe-list-meta {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.recipe-list-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.recipe-list-actions button {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.recipe-list-actions button:hover { background: #f5f5f5; }
+
+.delete-btn:hover { background: #ffebee !important; border-color: #e53935 !important; }
+
+@media (max-width: 600px) {
+  .form-row-3, .form-row-5, .form-row-4, .form-row-2 { flex-wrap: wrap; }
+  .form-row-3 > *, .form-row-5 > *, .form-row-4 > *, .form-row-2 > * { flex: 1 1 100%; }
+}
+
+/* Admin modal — širi i sa skrolovanjem */
+.admin-modal {
+  max-width: 700px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.admin-modal .modal-title {
+  font-size: 1.3rem;
+  margin: 0 0 1rem 0;
+  padding-right: 40px;
+  color: #1b5e20;
+}

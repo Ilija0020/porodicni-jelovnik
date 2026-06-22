@@ -1,0 +1,87 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: linear-gradient(135deg, #2e7d32, #1b5e20);
+  color: white;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.nav a.active {
+  background: rgba(255,255,255,0.25);
+  color: white;
+}
+
+.main {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+  font-size: 0.85rem;
+  border-top: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+@media (max-width: 700px) {
+  .header {
+    flex-direction: column;
+    padding: 0.6rem 1rem;
+    text-align: center;
+  }
+  .nav {
+    justify-content: center;
+  }
+  .nav a {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.9rem;
+  }
+  .main {
+    padding: 1rem;
+  }
+}

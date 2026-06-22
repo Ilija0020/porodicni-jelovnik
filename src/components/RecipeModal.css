@@ -1,0 +1,240 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 300;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 650px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.modal-close:hover { background: #e0e0e0; }
+
+.modal-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: #1b5e20;
+  padding-right: 40px;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Nutritivne vrednosti */
+.nutrition-box,
+.portions-box,
+.ingredients-box,
+.steps-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.nutrition-box h3,
+.portions-box h3,
+.ingredients-box h3,
+.steps-box h3 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.nutrition-grid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nutrition-item {
+  flex: 1;
+  min-width: 80px;
+  background: white;
+  border-radius: 8px;
+  padding: 0.6rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nut-value {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2e7d32;
+}
+
+.nut-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 0.15rem;
+}
+
+/* Gramaža po članu */
+.portions-hint {
+  font-size: 0.8rem;
+  color: #999;
+  margin: 0 0 0.8rem 0;
+}
+
+.portion-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
+.portion-card h4 {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.portion-scale {
+  font-size: 0.75rem;
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.portion-meta {
+  font-size: 0.78rem;
+  color: #777;
+  margin-bottom: 0.4rem;
+}
+
+.portion-nutrition {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  margin-bottom: 0.4rem;
+  color: #555;
+}
+
+.portion-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.portion-ing {
+  background: #f1f8e9;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #333;
+}
+
+/* Sastojci */
+.ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ingredient-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.ing-cat { font-size: 1.1rem; }
+.ing-name { flex: 1; font-weight: 500; }
+.ing-amount { color: #888; font-size: 0.85rem; }
+
+/* Koraci */
+.steps-list {
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.step-item {
+  padding: 0.5rem 0;
+  line-height: 1.5;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.step-item + .step-item {
+  border-top: 1px solid #eee;
+}
+
+/* YouTube */
+.youtube-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #e53935;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #ffcdd2;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.youtube-link:hover {
+  background: #ffebee;
+  border-color: #e53935;
+}
+
+@media (max-width: 500px) {
+  .modal-overlay { padding: 0.5rem; }
+  .modal-content { padding: 1.2rem; border-radius: 12px; }
+  .modal-title { font-size: 1.2rem; }
+  .nutrition-grid { gap: 0.3rem; }
+  .nutrition-item { padding: 0.4rem; }
+  .nut-value { font-size: 0.95rem; }
+}
