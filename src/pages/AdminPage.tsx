@@ -44,6 +44,7 @@ export default function AdminPage({ recipes, setRecipes }: Props) {
   const [form, setForm] = useState<Omit<Recipe, 'id'>>({ ...EMPTY_RECIPE });
   const [newIngredient, setNewIngredient] = useState({ name: '', amountPerServing: 100, unit: 'g', category: 'vegetables' as IngredientCategory });
   const [newStep, setNewStep] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const startNew = () => {
     setEditingId(null);
@@ -144,7 +145,7 @@ export default function AdminPage({ recipes, setRecipes }: Props) {
             </div>
             <div className="recipe-list-actions">
               <button onClick={() => startEdit(r)}>✏️</button>
-              <button onClick={() => remove(r.id)} className="delete-btn">🗑️</button>
+              <button onClick={() => setDeleteConfirm(r.id)} className="delete-btn">🗑️</button>
             </div>
           </div>
         ))}
@@ -271,6 +272,19 @@ export default function AdminPage({ recipes, setRecipes }: Props) {
             <div className="form-actions">
               <button className="save-btn" onClick={save}>💾 Sačuvaj recept</button>
               <button className="cancel-btn" onClick={() => setShowForm(false)}>Odustani</button>
+            </div>
+          </div>
+        </div>
+      )}
+    {/* Confirm dialog za brisanje */}
+      {deleteConfirm && (
+        <div className="modal-overlay" onClick={() => setDeleteConfirm(null)}>
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h4>Potvrda brisanja</h4>
+            <p>Sigurno želiš da obrišeš recept <strong>{recipes.find(r => r.id === deleteConfirm)?.title}</strong>?</p>
+            <div className="confirm-actions">
+              <button className="save-btn" onClick={() => { remove(deleteConfirm); setDeleteConfirm(null); }}>🗑️ Obriši</button>
+              <button className="cancel-btn" onClick={() => setDeleteConfirm(null)}>Odustani</button>
             </div>
           </div>
         </div>

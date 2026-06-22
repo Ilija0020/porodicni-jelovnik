@@ -19,15 +19,23 @@ export const ACTIVITY_LABELS: Record<number, string> = {
 };
 
 export const GOAL_LABELS: Record<string, string> = {
-  lose: 'Mršavljenje (-500 kcal)',
-  maintain: 'Održavanje težine',
-  gain: 'Gojenje (+500 kcal)',
+  '-500': 'Mršavljenje (-500 kcal)',
+  '-300': 'Blago mršavljenje (-300 kcal)',
+  '-200': 'Blago mršavljenje (-200 kcal)',
+  '0': 'Održavanje težine',
+  '200': 'Blago gojenje (+200 kcal)',
+  '300': 'Blago gojenje (+300 kcal)',
+  '500': 'Gojenje (+500 kcal)',
 };
 
 export const GOAL_ADJUSTMENTS: Record<string, number> = {
-  lose: -500,
-  maintain: 0,
-  gain: +500,
+  '-500': -500,
+  '-300': -300,
+  '-200': -200,
+  '0': 0,
+  '200': 200,
+  '300': 300,
+  '500': 500,
 };
 
 /** Mifflin-St Jeor: Bazalni metabolizam */
@@ -40,8 +48,8 @@ export function calculateBMR(member: Omit<FamilyMember, 'id' | 'dailyCalories'>)
 /** Ukupne dnevne kalorije (TDEE) sa prilagođenim ciljem */
 export function calculateTDEE(member: FamilyMember | Omit<FamilyMember, 'id' | 'dailyCalories'>): number {
   const tdee = Math.round(calculateBMR(member) * ACTIVITY_MULTIPLIERS[member.activityLevel]);
-  const goal = (member as any).goal || 'maintain';
-  return tdee + (GOAL_ADJUSTMENTS[goal] || 0);
+  const goal = (member as any).goal ?? 0;
+  return tdee + (GOAL_ADJUSTMENTS[String(goal)] || 0);
 }
 
 // === RASPODELA KALORIJA PO OBROCIMA ===

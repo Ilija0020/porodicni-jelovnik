@@ -2,7 +2,7 @@
 
 export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 export type ActivityLevel = 1 | 2 | 3 | 4 | 5;
-export type WeightGoal = 'lose' | 'maintain' | 'gain';
+export type WeightGoal = -500 | -300 | -200 | 0 | 200 | 300 | 500;
 export type IngredientCategory = 'meat' | 'vegetables' | 'dairy' | 'grains' | 'spices' | 'fruit' | 'other';
 export type DayOfWeek = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 export type Difficulty = 'easy' | 'medium' | 'hard';

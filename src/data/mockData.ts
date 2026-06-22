@@ -1,4 +1,4 @@
-import { FamilyMember, Recipe, MenuEntry } from '../types';
+import { FamilyMember, Recipe, MenuEntry, WeightGoal } from '../types';
 
 // === ČLANOVI PORODICE (bez dailyCalories — to će kalkulator izračunati) ===
 
@@ -11,7 +11,7 @@ export const INITIAL_FAMILY: Omit<FamilyMember, 'dailyCalories'>[] = [
     heightCm: 183,
     age: 30,
     activityLevel: 3,
-    goal: 'maintain',
+    goal: 0 as WeightGoal,
   },
   {
     id: 'm2',
@@ -21,7 +21,7 @@ export const INITIAL_FAMILY: Omit<FamilyMember, 'dailyCalories'>[] = [
     heightCm: 168,
     age: 28,
     activityLevel: 2,
-    goal: 'maintain',
+    goal: 0 as WeightGoal,
   },
   {
     id: 'm3',
@@ -31,7 +31,7 @@ export const INITIAL_FAMILY: Omit<FamilyMember, 'dailyCalories'>[] = [
     heightCm: 135,
     age: 8,
     activityLevel: 3,
-    goal: 'maintain',
+    goal: 0 as WeightGoal,
   },
 ];
 

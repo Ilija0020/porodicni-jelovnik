@@ -1,109 +1,176 @@
-.family-page h2 {
-  color: #1b5e20;
-  margin-top: 0;
+.family-page {
+  padding: 0;
+}
+
+.family-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.family-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
 }
 
 .add-btn {
-  padding: 0.7rem 1.5rem;
-  background: #2e7d32;
+  padding: 0.5rem 1.2rem;
+  background: var(--accent-600);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
-  margin-bottom: 1.5rem;
 }
 
-.add-btn:hover { background: #1b5e20; }
+.add-btn:hover { background: var(--accent-700); }
 
-/* Forma */
-.member-form {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+/* Modal form */
+.member-modal {
+  max-width: 460px;
 }
 
-.member-form h3 {
-  margin: 0 0 1rem 0;
-  color: #333;
+.member-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
-.member-form label {
+.member-form-body label {
   display: block;
-  margin-bottom: 0.8rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: #555;
+  color: var(--text-secondary);
 }
 
-.member-form input,
-.member-form select {
+.member-form-body input,
+.member-form-body select {
   display: block;
   width: 100%;
-  margin-top: 0.25rem;
-  padding: 0.5rem 0.7rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  box-sizing: border-box;
-}
-
-.member-form input:focus,
-.member-form select:focus {
-  outline: 2px solid #4caf50;
-  outline-offset: -1px;
+  margin-top: 0.2rem;
 }
 
 .form-row {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .form-row label {
   flex: 1;
 }
 
-.form-actions {
+/* Goal slider */
+.goal-slider-group {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.8rem 1rem;
+}
+
+.goal-slider-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.goal-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-color);
+  border-radius: 3px;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+.goal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-500);
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.goal-labels {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  justify-content: space-between;
+  margin-top: 0.3rem;
 }
 
-.save-btn {
-  padding: 0.6rem 1.5rem;
-  background: #2e7d32;
-  color: white;
-  border: none;
-  border-radius: 8px;
+.goal-tick {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  transition: all 0.15s;
+}
+
+.goal-tick.active {
+  font-weight: 700;
+  color: var(--accent-600);
+  font-size: 0.72rem;
+}
+
+.goal-selected {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  cursor: pointer;
+  color: var(--accent-700);
+  text-align: center;
 }
 
-.save-btn:hover { background: #1b5e20; }
-
-.cancel-btn {
-  padding: 0.6rem 1.2rem;
-  background: #eee;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.calories-preview {
+  padding: 0.6rem 1rem;
+  background: var(--accent-50);
+  border-radius: var(--radius-sm);
+  color: var(--accent-700);
+  font-size: 0.9rem;
+  text-align: center;
   font-weight: 500;
 }
 
-.cancel-btn:hover { background: #ddd; }
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
 
-.calories-preview {
-  margin-top: 1rem;
-  padding: 0.6rem 1rem;
-  background: #e8f5e9;
-  border-radius: 6px;
-  color: #2e7d32;
+.save-btn {
+  padding: 0.55rem 1.5rem;
+  background: var(--accent-600);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+
+.save-btn:hover { background: var(--accent-700); }
+
+.cancel-btn {
+  padding: 0.55rem 1.2rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
+
+.cancel-btn:hover { background: var(--border-color); }
 
 /* Lista članova */
 .family-list {
@@ -116,62 +183,93 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.2rem;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  padding: 0.9rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   gap: 1rem;
+  transition: box-shadow 0.15s;
+}
+
+.family-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .family-card-body h3 {
-  margin: 0 0 0.3rem 0;
-  font-size: 1.05rem;
-  color: #1b5e20;
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  color: var(--text-primary);
 }
 
 .family-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 1rem;
-  font-size: 0.82rem;
-  color: #666;
+  gap: 0.3rem 0.8rem;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
 }
 
 .activity-label {
-  color: #2e7d32;
+  color: var(--accent-600);
   font-weight: 500;
 }
 
 .family-card-actions {
   display: flex;
-  gap: 0.3rem;
+  gap: 0.25rem;
   flex-shrink: 0;
 }
 
 .family-card-actions button {
-  padding: 0.4rem 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: white;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: background 0.15s;
 }
 
-.family-card-actions button:hover { background: #f5f5f5; }
+.family-card-actions button:hover { background: var(--bg-tertiary); }
 
-.delete-btn:hover { background: #ffebee !important; border-color: #e53935 !important; }
+.delete-btn:hover { background: #fef2f2 !important; border-color: #fca5a5 !important; }
 
 .empty-msg {
-  color: #999;
+  color: var(--text-tertiary);
   text-align: center;
   padding: 2rem;
-  font-size: 1rem;
+}
+
+/* Confirm dialog */
+.confirm-dialog {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+
+.confirm-dialog h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.confirm-dialog p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1.2rem;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.5rem;
 }
 
 @media (max-width: 500px) {
-  .form-row { flex-direction: column; }
+  .form-row { flex-direction: column; gap: 0.5rem; }
   .family-card { flex-direction: column; align-items: flex-start; }
   .family-card-actions { margin-top: 0.5rem; }
 }
