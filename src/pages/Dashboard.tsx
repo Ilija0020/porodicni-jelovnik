@@ -37,6 +37,7 @@ interface Props {
 export default function Dashboard({ family, recipes, menu, setMenu }: Props) {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [expandedDay, setExpandedDay] = useState<string | null>('mon');
+  const [pickingFor, setPickingFor] = useState<{ day: string; meal: MealType } | null>(null);
 
   const getRecipe = (recipeId: string) => recipes.find((r) => r.id === recipeId);
 
@@ -117,25 +118,17 @@ export default function Dashboard({ family, recipes, menu, setMenu }: Props) {
                               </span>
                             </div>
 
-                            {/* Menu za zamenu — samo ako ima alternativa */}
+                            {/* Dugme za zamenu */}
                             {alts.length > 0 && (
-                              <div className="meal-swaps">
-                                {alts.slice(0, 3).map((alt) => (
-                                  <button
-                                    key={alt.id}
-                                    className="swap-chip"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      changeRecipe(day.key, meal, alt.id);
-                                    }}
-                                  >
-                                    Zameni sa: {alt.title}
-                                  </button>
-                                ))}
-                                {alts.length > 3 && (
-                                  <span className="more-swaps">+ još {alts.length - 3}</span>
-                                )}
-                              </div>
+                              <button
+                                className="swap-btn-inline"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setPickingFor({ day: day.key, meal });
+                                }}
+                              >
+                                🔄 Zameni
+                              </button>
                             )}
                           </div>
                         ) : (
@@ -159,6 +152,45 @@ export default function Dashboard({ family, recipes, menu, setMenu }: Props) {
           onClose={() => setSelectedRecipe(null)}
         />
       )}
+
+      {/* Modal za izbor alternative jela */}
+      {pickingFor && (() => {
+        const currentEntry = getMenuEntry(pickingFor.day, pickingFor.meal);
+        const currentRecipe = currentEntry ? getRecipe(currentEntry.recipeId) : null;
+        const alts = currentRecipe ? alternatives(pickingFor.meal, currentRecipe.id) : [];
+        return (
+          <div className="modal-overlay" onClick={() => setPickingFor(null)}>
+            <div className="modal-content picker-modal" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close" onClick={() => setPickingFor(null)}>✕</button>
+              <h3 className="modal-title">Zameni "{currentRecipe?.title}"</h3>
+              <p className="picker-subtitle">
+                Izaberi drugo jelo za {pickingFor.day} — {MEAL_LABELS[pickingFor.meal]}
+              </p>
+              <div className="picker-list-modal">
+                {alts.map((alt) => (
+                  <button
+                    key={alt.id}
+                    className="picker-item"
+                    onClick={() => {
+                      changeRecipe(pickingFor.day, pickingFor.meal, alt.id);
+                      setPickingFor(null);
+                    }}
+                  >
+                    <div className="picker-item-left">
+                      <span className="picker-item-title">{alt.title}</span>
+                      <span className="picker-item-meta">
+                        {alt.prepTimeMin} min · {alt.standardCalories} kcal ·{' '}
+                        {alt.difficulty === 'easy' ? 'Lako' : alt.difficulty === 'medium' ? 'Srednje' : 'Teško'}
+                      </span>
+                    </div>
+                    <span className="picker-item-action">Zameni →</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

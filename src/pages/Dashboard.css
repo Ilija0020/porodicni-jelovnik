@@ -172,6 +172,87 @@
   padding-left: 1.3rem;
 }
 
+/* Swap dugme */
+.swap-btn-inline {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 0.3rem;
+}
+
+.swap-btn-inline:hover {
+  background: var(--accent-50);
+  border-color: var(--accent-200);
+  color: var(--accent-600);
+}
+
+/* Picker modal */
+.picker-modal {
+  max-width: 450px;
+}
+
+.picker-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  margin: -0.3rem 0 1rem 0;
+}
+
+.picker-list-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+
+.picker-item:hover {
+  border-color: var(--accent-200);
+  background: var(--accent-50);
+}
+
+.picker-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.picker-item-title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.picker-item-meta {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+}
+
+.picker-item-action {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-500);
+  flex-shrink: 0;
+}
+
 /* === Desktop: 2 kolone === */
 @media (min-width: 800px) {
   .day-cards {
