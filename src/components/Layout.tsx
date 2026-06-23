@@ -17,14 +17,6 @@ function useTheme() {
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [theme, toggleTheme] = useTheme();
   const { pathname } = useLocation();
-  // Pitanje za mobile: da li je donja navigacija aktivna
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
-
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 700);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
 
   // Skrol na vrh pri promeni rute (mobile)
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);

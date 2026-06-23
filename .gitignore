@@ -25,3 +25,6 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Supabase local linked-project metadata
+supabase/.temp/

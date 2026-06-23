@@ -28,8 +28,8 @@ export default function LoginPage() {
           throw error;
         }
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Došlo je do greške');
     } finally {
       setLoading(false);
     }

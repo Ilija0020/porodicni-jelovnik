@@ -24,16 +24,6 @@ const CATEGORY_ICONS: Record<string, string> = {
   other: '📦',
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  meat: 'Meso i riba',
-  vegetables: 'Povrće',
-  dairy: 'Mlečni proizvodi',
-  grains: 'Žitarice i testa',
-  spices: 'Začini i ulja',
-  fruit: 'Voće',
-  other: 'Ostalo',
-};
-
 export default function RecipeModal({ recipe, family, onClose }: Props) {
   const portions = calculatePortions(family, recipe);
 

@@ -48,7 +48,7 @@ export function calculateBMR(member: Omit<FamilyMember, 'id' | 'dailyCalories'>)
 /** Ukupne dnevne kalorije (TDEE) sa prilagođenim ciljem */
 export function calculateTDEE(member: FamilyMember | Omit<FamilyMember, 'id' | 'dailyCalories'>): number {
   const tdee = Math.round(calculateBMR(member) * ACTIVITY_MULTIPLIERS[member.activityLevel]);
-  const goal = (member as any).goal ?? 0;
+  const goal = member.goal ?? 0;
   return tdee + (GOAL_ADJUSTMENTS[String(goal)] || 0);
 }
 

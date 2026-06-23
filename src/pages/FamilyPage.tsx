@@ -70,7 +70,8 @@ export default function FamilyPage({ family, setFamily }: Props) {
   };
 
   // Find closest goal step for slider
-  const sliderValue = GOAL_STEPS.indexOf(GOAL_STEPS.includes(form.goal as any) ? form.goal : 0);
+  const selectedGoalIndex = GOAL_STEPS.findIndex((step) => step === form.goal);
+  const sliderValue = selectedGoalIndex >= 0 ? selectedGoalIndex : GOAL_STEPS.indexOf(0);
 
   return (
     <div className="family-page">

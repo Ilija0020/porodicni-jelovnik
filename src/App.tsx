@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from './supabaseClient';
 import { Session } from '@supabase/supabase-js';
 import Layout from './components/Layout';
@@ -11,37 +11,29 @@ import AdminPage from './pages/AdminPage';
 import { FamilyMember, Recipe, MenuEntry } from './types';
 import { INITIAL_FAMILY, RECIPES, WEEKLY_MENU } from './data/mockData';
 import { calculateTDEE } from './utils/calculator';
+import { dataService } from './services/dataService';
 
-const STORAGE_KEYS = {
-  family: 'porodicni_jelovnik_family',
-  recipes: 'porodicni_jelovnik_recipes',
-  menu: 'porodicni_jelovnik_menu',
-};
-
-function loadFromStorage<T>(key: string, fallback: T): T {
-  try {
-    const stored = localStorage.getItem(key);
-    if (stored) return JSON.parse(stored);
-  } catch {}
-  return fallback;
-}
-
-function saveToStorage(key: string, data: unknown) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
+const initialFamily: FamilyMember[] = INITIAL_FAMILY.map((member) => ({
+  ...member,
+  dailyCalories: calculateTDEE(member),
+}));
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [dataError, setDataError] = useState('');
+  const [householdId, setHouseholdId] = useState<string | null>(null);
+  const [family, setFamilyState] = useState<FamilyMember[]>(initialFamily);
+  const [recipes, setRecipesState] = useState<Recipe[]>(RECIPES);
+  const [menu, setMenuState] = useState<MenuEntry[]>(WEEKLY_MENU);
 
   useEffect(() => {
-    // Proveri trenutnu sesiju
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setLoading(false);
+      setAuthLoading(false);
     });
 
-    // Slušaj promene auth stanja
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
@@ -49,27 +41,68 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const [family, setFamily] = useState<FamilyMember[]>(() => {
-    const raw = loadFromStorage(STORAGE_KEYS.family, INITIAL_FAMILY);
-    return raw.map((m: any) => ({
-      ...m,
-      dailyCalories: m.dailyCalories || calculateTDEE(m),
-    }));
-  });
+  useEffect(() => {
+    if (!session) return;
 
-  const [recipes, setRecipes] = useState<Recipe[]>(() =>
-    loadFromStorage(STORAGE_KEYS.recipes, RECIPES)
-  );
+    let cancelled = false;
 
-  const [menu, setMenu] = useState<MenuEntry[]>(() =>
-    loadFromStorage(STORAGE_KEYS.menu, WEEKLY_MENU)
-  );
+    const loadData = async () => {
+      setDataLoading(true);
+      setDataError('');
 
-  useEffect(() => { saveToStorage(STORAGE_KEYS.family, family); }, [family]);
-  useEffect(() => { saveToStorage(STORAGE_KEYS.recipes, recipes); }, [recipes]);
-  useEffect(() => { saveToStorage(STORAGE_KEYS.menu, menu); }, [menu]);
+      try {
+        const remoteData = await dataService.getAppData();
+        if (cancelled) return;
 
-  if (loading) {
+        const seededFamily = remoteData.family.length > 0 ? remoteData.family : initialFamily;
+        const seededRecipes = remoteData.recipes.length > 0 ? remoteData.recipes : RECIPES;
+        const seededMenu = remoteData.menu.length > 0 ? remoteData.menu : WEEKLY_MENU;
+
+        setHouseholdId(remoteData.householdId);
+        setFamilyState(seededFamily);
+        setRecipesState(seededRecipes);
+        setMenuState(seededMenu);
+
+        if (remoteData.family.length === 0) await dataService.syncFamily(seededFamily, remoteData.householdId);
+        if (remoteData.recipes.length === 0) await dataService.syncRecipes(seededRecipes, remoteData.householdId);
+        if (remoteData.menu.length === 0) await dataService.syncMenu(seededMenu, remoteData.householdId);
+      } catch (error: unknown) {
+        if (!cancelled) setDataError(error instanceof Error ? error.message : 'Greška pri učitavanju podataka');
+      } finally {
+        if (!cancelled) setDataLoading(false);
+      }
+    };
+
+    void loadData();
+
+    return () => { cancelled = true; };
+  }, [session]);
+
+  const setFamily = useCallback((nextFamily: FamilyMember[]) => {
+    setFamilyState(nextFamily);
+    if (!householdId) return;
+    dataService.syncFamily(nextFamily, householdId).catch((error: unknown) => {
+      setDataError(error instanceof Error ? error.message : 'Greška pri snimanju članova');
+    });
+  }, [householdId]);
+
+  const setRecipes = useCallback((nextRecipes: Recipe[]) => {
+    setRecipesState(nextRecipes);
+    if (!householdId) return;
+    dataService.syncRecipes(nextRecipes, householdId).catch((error: unknown) => {
+      setDataError(error instanceof Error ? error.message : 'Greška pri snimanju recepata');
+    });
+  }, [householdId]);
+
+  const setMenu = useCallback((nextMenu: MenuEntry[]) => {
+    setMenuState(nextMenu);
+    if (!householdId) return;
+    dataService.syncMenu(nextMenu, householdId).catch((error: unknown) => {
+      setDataError(error instanceof Error ? error.message : 'Greška pri snimanju jelovnika');
+    });
+  }, [householdId]);
+
+  if (authLoading || dataLoading) {
     return <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', color:'var(--text-tertiary)' }}>⏳ Učitavanje...</div>;
   }
 
@@ -79,6 +112,11 @@ export default function App() {
 
   return (
     <Layout>
+      {dataError && (
+        <div style={{ margin: '12px auto', maxWidth: 900, color: '#b91c1c', background: '#fee2e2', padding: 12, borderRadius: 12 }}>
+          ⚠️ {dataError}
+        </div>
+      )}
       <Routes>
         <Route path="/" element={<Dashboard family={family} recipes={recipes} menu={menu} setMenu={setMenu} />} />
         <Route path="/family" element={<FamilyPage family={family} setFamily={setFamily} />} />

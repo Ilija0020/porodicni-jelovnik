@@ -24,6 +24,14 @@ const CATEGORIES: { value: IngredientCategory; label: string }[] = [
   { value: 'other', label: 'Ostalo' },
 ];
 
+const NUTRITION_FIELDS: { label: string; key: keyof Pick<Recipe, 'standardCalories' | 'standardProteinG' | 'standardCarbsG' | 'standardFatG' | 'standardFiberG'> }[] = [
+  { label: 'kcal', key: 'standardCalories' },
+  { label: 'Proteini (g)', key: 'standardProteinG' },
+  { label: 'Hidrati (g)', key: 'standardCarbsG' },
+  { label: 'Masti (g)', key: 'standardFatG' },
+  { label: 'Vlakna (g)', key: 'standardFiberG' },
+];
+
 const EMPTY_RECIPE: Omit<Recipe, 'id'> = {
   title: '',
   mealType: 'lunch',
@@ -189,18 +197,12 @@ export default function AdminPage({ recipes, setRecipes }: Props) {
             {/* Nutritivne vrednosti */}
             <h4>Nutritivne vrednosti (standardna porcija)</h4>
             <div className="form-row-5">
-              {[
-                ['kcal', 'standardCalories'],
-                ['Proteini (g)', 'standardProteinG'],
-                ['Hidrati (g)', 'standardCarbsG'],
-                ['Masti (g)', 'standardFatG'],
-                ['Vlakna (g)', 'standardFiberG'],
-              ].map(([label, key]) => (
+              {NUTRITION_FIELDS.map(({ label, key }) => (
                 <div className="form-section" key={key}>
                   <label>{label}:</label>
                   <input
                     type="number"
-                    value={(form as any)[key]}
+                    value={form[key]}
                     onChange={(e) => setForm({ ...form, [key]: +e.target.value })}
                   />
                 </div>
