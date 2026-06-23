@@ -11,19 +11,51 @@ import AdminPage from './pages/AdminPage';
 import { FamilyMember, Recipe, MenuEntry } from './types';
 import { INITIAL_FAMILY, RECIPES, WEEKLY_MENU } from './data/mockData';
 import { calculateTDEE } from './utils/calculator';
-import { dataService } from './services/dataService';
+import { dataService, HouseholdContext } from './services/dataService';
 
 const initialFamily: FamilyMember[] = INITIAL_FAMILY.map((member) => ({
   ...member,
   dailyCalories: calculateTDEE(member),
 }));
 
+function seedDataForHousehold(householdId: string) {
+  const prefix = householdId.slice(0, 8);
+  const recipeIdMap = new Map<string, string>();
+
+  const family = initialFamily.map((member) => ({
+    ...member,
+    id: `${prefix}-${member.id}`,
+  }));
+
+  const recipes = RECIPES.map((recipe) => {
+    const recipeId = `${prefix}-${recipe.id}`;
+    recipeIdMap.set(recipe.id, recipeId);
+
+    return {
+      ...recipe,
+      id: recipeId,
+      ingredients: recipe.ingredients.map((ingredient) => ({
+        ...ingredient,
+        id: `${recipeId}-${ingredient.id}`,
+      })),
+    };
+  });
+
+  const menu = WEEKLY_MENU.map((entry) => ({
+    ...entry,
+    id: `${prefix}-${entry.id}`,
+    recipeId: recipeIdMap.get(entry.recipeId) ?? entry.recipeId,
+  }));
+
+  return { family, recipes, menu };
+}
+
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [dataLoading, setDataLoading] = useState(false);
   const [dataError, setDataError] = useState('');
-  const [householdId, setHouseholdId] = useState<string | null>(null);
+  const [household, setHousehold] = useState<HouseholdContext | null>(null);
   const [family, setFamilyState] = useState<FamilyMember[]>(initialFamily);
   const [recipes, setRecipesState] = useState<Recipe[]>(RECIPES);
   const [menu, setMenuState] = useState<MenuEntry[]>(WEEKLY_MENU);
@@ -51,21 +83,22 @@ export default function App() {
       setDataError('');
 
       try {
-        const remoteData = await dataService.getAppData();
+        const remoteData = await dataService.getAppData(session);
         if (cancelled) return;
 
-        const seededFamily = remoteData.family.length > 0 ? remoteData.family : initialFamily;
-        const seededRecipes = remoteData.recipes.length > 0 ? remoteData.recipes : RECIPES;
-        const seededMenu = remoteData.menu.length > 0 ? remoteData.menu : WEEKLY_MENU;
+        const seedData = seedDataForHousehold(remoteData.household.id);
+        const seededFamily = remoteData.family.length > 0 ? remoteData.family : seedData.family;
+        const seededRecipes = remoteData.recipes.length > 0 ? remoteData.recipes : seedData.recipes;
+        const seededMenu = remoteData.menu.length > 0 ? remoteData.menu : seedData.menu;
 
-        setHouseholdId(remoteData.householdId);
+        setHousehold(remoteData.household);
         setFamilyState(seededFamily);
         setRecipesState(seededRecipes);
         setMenuState(seededMenu);
 
-        if (remoteData.family.length === 0) await dataService.syncFamily(seededFamily, remoteData.householdId);
-        if (remoteData.recipes.length === 0) await dataService.syncRecipes(seededRecipes, remoteData.householdId);
-        if (remoteData.menu.length === 0) await dataService.syncMenu(seededMenu, remoteData.householdId);
+        if (remoteData.family.length === 0) await dataService.syncFamily(seededFamily, remoteData.household.id);
+        if (remoteData.recipes.length === 0) await dataService.syncRecipes(seededRecipes, remoteData.household.id);
+        if (remoteData.menu.length === 0) await dataService.syncMenu(seededMenu, remoteData.household.id);
       } catch (error: unknown) {
         if (!cancelled) setDataError(error instanceof Error ? error.message : 'Greška pri učitavanju podataka');
       } finally {
@@ -80,27 +113,27 @@ export default function App() {
 
   const setFamily = useCallback((nextFamily: FamilyMember[]) => {
     setFamilyState(nextFamily);
-    if (!householdId) return;
-    dataService.syncFamily(nextFamily, householdId).catch((error: unknown) => {
+    if (!household) return;
+    dataService.syncFamily(nextFamily, household.id).catch((error: unknown) => {
       setDataError(error instanceof Error ? error.message : 'Greška pri snimanju članova');
     });
-  }, [householdId]);
+  }, [household]);
 
   const setRecipes = useCallback((nextRecipes: Recipe[]) => {
     setRecipesState(nextRecipes);
-    if (!householdId) return;
-    dataService.syncRecipes(nextRecipes, householdId).catch((error: unknown) => {
+    if (!household) return;
+    dataService.syncRecipes(nextRecipes, household.id).catch((error: unknown) => {
       setDataError(error instanceof Error ? error.message : 'Greška pri snimanju recepata');
     });
-  }, [householdId]);
+  }, [household]);
 
   const setMenu = useCallback((nextMenu: MenuEntry[]) => {
     setMenuState(nextMenu);
-    if (!householdId) return;
-    dataService.syncMenu(nextMenu, householdId).catch((error: unknown) => {
+    if (!household) return;
+    dataService.syncMenu(nextMenu, household.id).catch((error: unknown) => {
       setDataError(error instanceof Error ? error.message : 'Greška pri snimanju jelovnika');
     });
-  }, [householdId]);
+  }, [household]);
 
   if (authLoading || dataLoading) {
     return <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', color:'var(--text-tertiary)' }}>⏳ Učitavanje...</div>;
@@ -111,7 +144,7 @@ export default function App() {
   }
 
   return (
-    <Layout>
+    <Layout household={household}>
       {dataError && (
         <div style={{ margin: '12px auto', maxWidth: 900, color: '#b91c1c', background: '#fee2e2', padding: 12, borderRadius: 12 }}>
           ⚠️ {dataError}

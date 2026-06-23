@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [success, setSuccess] = useState('');
+  const [inviteCode, setInviteCode] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,9 +19,18 @@ export default function LoginPage() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const cleanInviteCode = inviteCode.trim().toUpperCase();
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: cleanInviteCode ? { pendingInviteCode: cleanInviteCode } : {},
+          },
+        });
         if (error) throw error;
-        setSuccess('Registracija uspešna! Proveri email da potvrdiš nalog.');
+        setSuccess(cleanInviteCode
+          ? 'Registracija uspešna! Kada potvrdiš email, bićeš dodat/a u porodični jelovnik preko unetog koda.'
+          : 'Registracija uspešna! Proveri email da potvrdiš nalog. Ako ne uneseš kod, dobićeš svoj jelovnik.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
@@ -64,6 +74,19 @@ export default function LoginPage() {
               minLength={6}
             />
           </label>
+
+          {isSignUp && (
+            <label>
+              Porodični kod <span style={{ color: 'var(--text-tertiary)', fontWeight: 400 }}>(opciono)</span>
+              <input
+                type="text"
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                placeholder="npr. A1B2C3D4"
+                maxLength={12}
+              />
+            </label>
+          )}
 
           {error && <div className="login-error">{error}</div>}
           {success && <div className="login-success">{success}</div>}

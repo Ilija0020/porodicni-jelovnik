@@ -36,6 +36,26 @@
 .nav-desktop {
   display: flex;
   gap: 0.25rem;
+  margin-left: auto;
+}
+
+.household-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.household-badge strong {
+  color: var(--accent-700);
+  font-size: 0.72rem;
 }
 
 .nav-desktop a {
@@ -170,6 +190,13 @@
 
   .logo {
     font-size: 1rem;
+  }
+
+  .household-badge {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .main {

@@ -1,3 +1,4 @@
+import { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabaseClient';
 import {
   DayOfWeek,
@@ -11,7 +12,7 @@ import {
   RecipeStep,
 } from '../types';
 
-type HouseholdRow = { id: string; name: string | null };
+type HouseholdRow = { id: string; name: string | null; invite_code: string };
 
 type FamilyMemberRow = {
   id: string;
@@ -67,8 +68,14 @@ type MenuEntryRow = {
   recipe_id: string;
 };
 
+export interface HouseholdContext {
+  id: string;
+  name: string;
+  inviteCode: string;
+}
+
 export interface AppData {
-  householdId: string;
+  household: HouseholdContext;
   family: FamilyMember[];
   recipes: Recipe[];
   menu: MenuEntry[];
@@ -210,37 +217,57 @@ async function deleteMissing(table: 'family_members' | 'recipes' | 'weekly_menu'
   if (error) throw error;
 }
 
+function pendingInviteCode(session: Session): string | null {
+  const code = session.user.user_metadata?.pendingInviteCode;
+  return typeof code === 'string' && code.trim() ? code.trim().toUpperCase() : null;
+}
+
+function householdFromRow(row: HouseholdRow): HouseholdContext {
+  return {
+    id: row.id,
+    name: row.name || 'Moja porodica',
+    inviteCode: row.invite_code,
+  };
+}
+
 export const dataService = {
-  async getHouseholdId() {
-    const { data, error } = await supabase
-      .from('household')
-      .select('id,name')
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle<HouseholdRow>();
+  async ensureHousehold(session: Session) {
+    const inviteCode = pendingInviteCode(session);
+    const { data: householdId, error } = await supabase.rpc('get_or_create_household', {
+      invite_code_input: inviteCode,
+    });
 
     if (error) throw error;
-    if (data?.id) return data.id;
+    if (!householdId) throw new Error('Nije moguće pronaći ili napraviti domaćinstvo');
 
-    const { data: created, error: createError } = await supabase
-      .from('household')
-      .insert({ name: 'Porodica' })
-      .select('id,name')
-      .single<HouseholdRow>();
+    if (inviteCode) {
+      await supabase.auth.updateUser({ data: { pendingInviteCode: null } });
+    }
 
-    if (createError) throw createError;
-    return created.id;
+    return householdId as string;
   },
 
-  async getAppData(): Promise<AppData> {
-    const householdId = await this.getHouseholdId();
-    const [family, recipes, menu] = await Promise.all([
+  async getHousehold(householdId: string) {
+    const { data, error } = await supabase
+      .from('household')
+      .select('id,name,invite_code')
+      .eq('id', householdId)
+      .single<HouseholdRow>();
+
+    if (error) throw error;
+    return householdFromRow(data);
+  },
+
+  async getAppData(session: Session): Promise<AppData> {
+    const householdId = await this.ensureHousehold(session);
+    const [household, family, recipes, menu] = await Promise.all([
+      this.getHousehold(householdId),
       this.getFamily(householdId),
       this.getRecipes(householdId),
       this.getMenu(householdId),
     ]);
 
-    return { householdId, family, recipes, menu };
+    return { household, family, recipes, menu };
   },
 
   async getFamily(householdId: string) {

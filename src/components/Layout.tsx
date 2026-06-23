@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { HouseholdContext } from '../services/dataService';
 import './Layout.css';
 
 function useTheme() {
@@ -14,7 +15,7 @@ function useTheme() {
   return [theme, () => setTheme(t => t === 'light' ? 'dark' : 'light')] as const;
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children, household }: { children: React.ReactNode; household: HouseholdContext | null }) {
   const [theme, toggleTheme] = useTheme();
   const { pathname } = useLocation();
 
@@ -27,6 +28,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="header">
         <div className="header-inner">
           <h1 className="logo">🍽️ jelovnik</h1>
+          {household && (
+            <div className="household-badge" title="Podeli ovaj kod sa članom porodice pri registraciji">
+              <span>{household.name}</span>
+              <strong>Kod: {household.inviteCode}</strong>
+            </div>
+          )}
           <nav className="nav-desktop">
             <NavLink to="/" end>📅 Jelovnik</NavLink>
             <NavLink to="/family">👤 Članovi</NavLink>
