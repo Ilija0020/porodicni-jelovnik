@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import './LoginPage.css';
 
@@ -98,10 +99,22 @@ export default function LoginPage() {
 
         <p className="login-toggle">
           {isSignUp ? 'Već imaš nalog? ' : 'Nemaš nalog? '}
-          <button className="toggle-btn" onClick={() => { setIsSignUp(!isSignUp); setError(''); setSuccess(''); }}>
+          <button
+            type="button"
+            className="toggle-btn"
+            onClick={() => { setIsSignUp(!isSignUp); setError(''); setSuccess(''); }}
+          >
             {isSignUp ? 'Prijavi se' : 'Registruj se'}
           </button>
         </p>
+
+        {!isSignUp && (
+          <p className="login-toggle login-forgot">
+            <Link to="/reset-password" className="forgot-link">
+              Zaboravio/la si lozinku?
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

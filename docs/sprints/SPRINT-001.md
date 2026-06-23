@@ -157,6 +157,6 @@ Novo pravilo sprinta:
 - [x] Documentation expanded for weaker-model implementation.
 - [ ] Account settings UI exists.
 - [ ] Family settings UI exists.
-- [ ] Forgot password flow works.
+- [x] Forgot password flow works.
 - [ ] Admin route shell exists.
 - [ ] Backlog updated after each implemented card.

@@ -1,9 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from './supabaseClient';
 import { Session } from '@supabase/supabase-js';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import Dashboard from './pages/Dashboard';
 import FamilyPage from './pages/FamilyPage';
 import ShoppingList from './pages/ShoppingList';
@@ -59,6 +60,8 @@ export default function App() {
   const [family, setFamilyState] = useState<FamilyMember[]>(initialFamily);
   const [recipes, setRecipesState] = useState<Recipe[]>(RECIPES);
   const [menu, setMenuState] = useState<MenuEntry[]>(WEEKLY_MENU);
+  const location = useLocation();
+  const isResetPasswordRoute = location.pathname === '/reset-password';
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -135,27 +138,33 @@ export default function App() {
     });
   }, [household]);
 
-  if (authLoading || dataLoading) {
+  if (authLoading || (dataLoading && !isResetPasswordRoute)) {
     return <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', color:'var(--text-tertiary)' }}>⏳ Učitavanje...</div>;
   }
 
-  if (!session) {
-    return <LoginPage />;
-  }
-
   return (
-    <Layout household={household}>
-      {dataError && (
-        <div style={{ margin: '12px auto', maxWidth: 900, color: '#b91c1c', background: '#fee2e2', padding: 12, borderRadius: 12 }}>
-          ⚠️ {dataError}
-        </div>
-      )}
-      <Routes>
-        <Route path="/" element={<Dashboard family={family} recipes={recipes} menu={menu} setMenu={setMenu} />} />
-        <Route path="/family" element={<FamilyPage family={family} setFamily={setFamily} />} />
-        <Route path="/shopping" element={<ShoppingList family={family} recipes={recipes} menu={menu} />} />
-        <Route path="/admin" element={<AdminPage recipes={recipes} setRecipes={setRecipes} />} />
-      </Routes>
-    </Layout>
+    <Routes>
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route
+        path="*"
+        element={session ? (
+          <Layout household={household}>
+            {dataError && (
+              <div style={{ margin: '12px auto', maxWidth: 900, color: '#b91c1c', background: '#fee2e2', padding: 12, borderRadius: 12 }}>
+                ⚠️ {dataError}
+              </div>
+            )}
+            <Routes>
+              <Route path="/" element={<Dashboard family={family} recipes={recipes} menu={menu} setMenu={setMenu} />} />
+              <Route path="/family" element={<FamilyPage family={family} setFamily={setFamily} />} />
+              <Route path="/shopping" element={<ShoppingList family={family} recipes={recipes} menu={menu} />} />
+              <Route path="/admin" element={<AdminPage recipes={recipes} setRecipes={setRecipes} />} />
+            </Routes>
+          </Layout>
+        ) : (
+          <LoginPage />
+        )}
+      />
+    </Routes>
   );
 }

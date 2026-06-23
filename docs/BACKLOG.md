@@ -26,7 +26,7 @@ npm run build
 
 ## P0 — sigurnost, nalog, porodica, admin osnova
 
-### [ ] P0-001 Account: zaboravljena šifra
+### [x] P0-001 Account: zaboravljena šifra
 
 **Cilj:** Korisnik može resetovati lozinku preko Supabase email flow-a bez otkrivanja da li email postoji.
 

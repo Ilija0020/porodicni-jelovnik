@@ -100,3 +100,18 @@
 }
 
 .toggle-btn:hover { color: var(--accent-700); }
+
+.login-forgot {
+  margin-top: 0.35rem;
+}
+
+.forgot-link {
+  color: var(--accent-600);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  color: var(--accent-700);
+  text-decoration: underline;
+}
