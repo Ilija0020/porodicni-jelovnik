@@ -155,7 +155,7 @@ Novo pravilo sprinta:
 - [x] Global admin profile exists.
 - [x] Documentation structure created.
 - [x] Documentation expanded for weaker-model implementation.
-- [ ] Account settings UI exists.
+- [x] Account settings UI exists.
 - [ ] Family settings UI exists.
 - [x] Forgot password flow works.
 - [ ] Admin route shell exists.

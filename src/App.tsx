@@ -9,7 +9,8 @@ import Dashboard from './pages/Dashboard';
 import FamilyPage from './pages/FamilyPage';
 import ShoppingList from './pages/ShoppingList';
 import AdminPage from './pages/AdminPage';
-import { FamilyMember, Recipe, MenuEntry } from './types';
+import AccountSettingsPage from './pages/AccountSettingsPage';
+import { FamilyMember, Recipe, MenuEntry, UserProfile, HouseholdMembership } from './types';
 import { INITIAL_FAMILY, RECIPES, WEEKLY_MENU } from './data/mockData';
 import { calculateTDEE } from './utils/calculator';
 import { dataService, HouseholdContext } from './services/dataService';
@@ -57,6 +58,8 @@ export default function App() {
   const [dataLoading, setDataLoading] = useState(false);
   const [dataError, setDataError] = useState('');
   const [household, setHousehold] = useState<HouseholdContext | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [membership, setMembership] = useState<HouseholdMembership | null>(null);
   const [family, setFamilyState] = useState<FamilyMember[]>(initialFamily);
   const [recipes, setRecipesState] = useState<Recipe[]>(RECIPES);
   const [menu, setMenuState] = useState<MenuEntry[]>(WEEKLY_MENU);
@@ -77,7 +80,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!session) return;
+    if (!session) {
+      return;
+    }
 
     let cancelled = false;
 
@@ -98,6 +103,16 @@ export default function App() {
         setFamilyState(seededFamily);
         setRecipesState(seededRecipes);
         setMenuState(seededMenu);
+
+        const [remoteProfile, remoteMembership] = await Promise.all([
+          dataService.getCurrentProfile(session.user.id),
+          dataService.getCurrentHouseholdMembership(remoteData.household.id, session.user.id),
+        ]);
+
+        if (cancelled) return;
+
+        setProfile(remoteProfile);
+        setMembership(remoteMembership);
 
         if (remoteData.family.length === 0) await dataService.syncFamily(seededFamily, remoteData.household.id);
         if (remoteData.recipes.length === 0) await dataService.syncRecipes(seededRecipes, remoteData.household.id);
@@ -138,6 +153,12 @@ export default function App() {
     });
   }, [household]);
 
+  const updateProfileName = useCallback(async (displayName: string) => {
+    if (!session) return;
+    await dataService.updateCurrentProfile(session.user.id, displayName);
+    setProfile((current) => current ? { ...current, displayName: displayName.trim() || undefined } : current);
+  }, [session]);
+
   if (authLoading || (dataLoading && !isResetPasswordRoute)) {
     return <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', color:'var(--text-tertiary)' }}>⏳ Učitavanje...</div>;
   }
@@ -159,6 +180,7 @@ export default function App() {
               <Route path="/family" element={<FamilyPage family={family} setFamily={setFamily} />} />
               <Route path="/shopping" element={<ShoppingList family={family} recipes={recipes} menu={menu} />} />
               <Route path="/admin" element={<AdminPage recipes={recipes} setRecipes={setRecipes} />} />
+              <Route path="/account" element={<AccountSettingsPage session={session} profile={profile} household={household} membership={membership} onProfileUpdate={updateProfileName} />} />
             </Routes>
           </Layout>
         ) : (

@@ -6,6 +6,24 @@ export type WeightGoal = -500 | -300 | -200 | 0 | 200 | 300 | 500;
 export type IngredientCategory = 'meat' | 'vegetables' | 'dairy' | 'grains' | 'spices' | 'fruit' | 'other';
 export type DayOfWeek = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 export type Difficulty = 'easy' | 'medium' | 'hard';
+export type AppRole = 'user' | 'admin';
+export type HouseholdRole = 'owner' | 'member' | 'read-only';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  displayName?: string;
+  appRole: AppRole;
+  isDeactivated: boolean;
+}
+
+export interface HouseholdMembership {
+  id: string;
+  householdId: string;
+  userId: string;
+  email: string;
+  role: HouseholdRole;
+}
 
 export interface FamilyMember {
   id: string;

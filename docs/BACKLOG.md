@@ -64,7 +64,7 @@ npm run build
 
 ---
 
-### [ ] P0-002 Account settings
+### [x] P0-002 Account settings
 
 **Cilj:** Korisnik vidi osnovne informacije o nalogu i ima centralno mesto za nalog.
 

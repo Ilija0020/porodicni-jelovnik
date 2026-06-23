@@ -10,9 +10,29 @@ import {
   MenuEntry,
   Recipe,
   RecipeStep,
+  AppRole,
+  HouseholdMembership,
+  HouseholdRole,
+  UserProfile,
 } from '../types';
 
 type HouseholdRow = { id: string; name: string | null; invite_code: string };
+
+type ProfileRow = {
+  id: string;
+  email: string;
+  display_name: string | null;
+  app_role: AppRole;
+  is_deactivated: boolean;
+};
+
+type HouseholdMembershipRow = {
+  id: string;
+  household_id: string;
+  user_id: string;
+  email: string;
+  role: HouseholdRole;
+};
 
 type FamilyMemberRow = {
   id: string;
@@ -230,6 +250,30 @@ function householdFromRow(row: HouseholdRow): HouseholdContext {
   };
 }
 
+function profileFromRow(row: ProfileRow): UserProfile {
+  return {
+    id: row.id,
+    email: row.email,
+    displayName: row.display_name ?? undefined,
+    appRole: row.app_role,
+    isDeactivated: row.is_deactivated,
+  };
+}
+
+function householdMembershipFromRow(row: HouseholdMembershipRow): HouseholdMembership {
+  return {
+    id: row.id,
+    householdId: row.household_id,
+    userId: row.user_id,
+    email: row.email,
+    role: row.role,
+  };
+}
+
+function householdRoleFromRow(role: string): HouseholdRole {
+  return role as HouseholdRole;
+}
+
 export const dataService = {
   async ensureHousehold(session: Session) {
     const inviteCode = pendingInviteCode(session);
@@ -256,6 +300,38 @@ export const dataService = {
 
     if (error) throw error;
     return householdFromRow(data);
+  },
+
+  async getCurrentProfile(userId: string) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id,email,display_name,app_role,is_deactivated')
+      .eq('id', userId)
+      .single<ProfileRow>();
+
+    if (error) throw error;
+    return profileFromRow(data);
+  },
+
+  async getCurrentHouseholdMembership(householdId: string, userId: string) {
+    const { data, error } = await supabase
+      .from('household_members')
+      .select('id,household_id,user_id,email,role')
+      .eq('household_id', householdId)
+      .eq('user_id', userId)
+      .single<HouseholdMembershipRow>();
+
+    if (error) throw error;
+    return householdMembershipFromRow({ ...data, role: householdRoleFromRow(data.role) });
+  },
+
+  async updateCurrentProfile(userId: string, displayName: string) {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ display_name: displayName.trim() || null })
+      .eq('id', userId);
+
+    if (error) throw error;
   },
 
   async getAppData(session: Session): Promise<AppData> {

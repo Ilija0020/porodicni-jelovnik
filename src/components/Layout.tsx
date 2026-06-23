@@ -39,6 +39,7 @@ export default function Layout({ children, household }: { children: React.ReactN
             <NavLink to="/family">👤 Članovi</NavLink>
             <NavLink to="/shopping">🛒 Nabavka</NavLink>
             <NavLink to="/admin">⚙️ Recepti</NavLink>
+            <NavLink to="/account">👤 Nalog</NavLink>
           </nav>
           <button className="theme-toggle" onClick={toggleTheme} title="Promeni temu">
             {theme === 'light' ? '🌙' : '☀️'}
@@ -69,6 +70,10 @@ export default function Layout({ children, household }: { children: React.ReactN
         <NavLink to="/admin" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           <span className="nav-icon">⚙️</span>
           <span className="nav-label">Recepti</span>
+        </NavLink>
+        <NavLink to="/account" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          <span className="nav-icon">👤</span>
+          <span className="nav-label">Nalog</span>
         </NavLink>
       </nav>
     </div>
