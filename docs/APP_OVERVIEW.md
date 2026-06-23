@@ -168,6 +168,35 @@ Akcije za logovanje:
 - `account_deactivated`
 - `household_soft_deleted`
 
+## Kako koristiti ovu dokumentaciju sa slabijim modelom
+
+Ova dokumentacija je pisana tako da i slabiji model, npr. `5.4mini`, može da implementira kod bez nagađanja.
+
+Kada daješ zadatak slabijem modelu, u prompt ubaci minimum ova 3 fajla:
+
+```text
+docs/APP_OVERVIEW.md
+docs/IMPLEMENTATION_GUIDE.md
+docs/BACKLOG.md
+```
+
+Za aktivni sprint dodaj i:
+
+```text
+docs/sprints/SPRINT-001.md
+```
+
+Pravilo za sve modele:
+
+1. Prvo pročitati `APP_OVERVIEW.md` za proizvod i odluke.
+2. Zatim pročitati `IMPLEMENTATION_GUIDE.md` za tačne fajlove, tipove, mapiranja i komande.
+3. Zatim otvoriti konkretnu karticu iz `BACKLOG.md`.
+4. Implementirati samo tu jednu karticu.
+5. Pokrenuti `npm run lint` i `npm run build`.
+6. Upisati šta je urađeno u aktuelni sprint dokument.
+
+Slabiji model ne sme da uvodi novu arhitekturu ako nije opisana u ovim fajlovima. Ako nešto nije jasno, treba da doda pitanje u `Open questions`, a ne da izmišlja.
+
 ## Dokumentacija rada
 
 Preporučena struktura:

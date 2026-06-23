@@ -134,11 +134,27 @@ Korisnički flow:
 - Podela globalnih i porodičnih recepata mora rešiti postojeće recepte bez konflikta.
 - Recipe suggestion payload treba da bude dovoljno fleksibilan, ali ne prekomplikovan.
 
+## Dokumentacioni standard dodat posle grillovanja
+
+Korisnik je razjasnio da dokumentacija ne treba da bude samo opis proizvoda, nego i implementacioni vodič za slabije modele kao što je `5.4mini`.
+
+Dodato:
+
+- `docs/IMPLEMENTATION_GUIDE.md` — detaljan vodič kroz fajlove, tipove, Supabase mapiranje, RLS pravila i feature recipes.
+- `docs/BACKLOG.md` je proširen tako da svaka P0 kartica ima cilj, fajlove, korake i acceptance criteria.
+- `docs/APP_OVERVIEW.md` je dopunjen sekcijom kako koristiti dokumentaciju sa slabijim modelom.
+
+Novo pravilo sprinta:
+
+- Svaka završena kartica mora ažurirati `BACKLOG.md` i ovaj sprint fajl.
+- Ako implementator koristi slabiji model, prompt mora uključiti `APP_OVERVIEW.md`, `IMPLEMENTATION_GUIDE.md`, `BACKLOG.md` i ovaj sprint fajl.
+
 ## Definition of Done za Sprint 001
 
 - [x] Existing family accounts linked.
 - [x] Global admin profile exists.
 - [x] Documentation structure created.
+- [x] Documentation expanded for weaker-model implementation.
 - [ ] Account settings UI exists.
 - [ ] Family settings UI exists.
 - [ ] Forgot password flow works.
